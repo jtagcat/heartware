@@ -5,7 +5,7 @@ OPTIONAL ENV:
 """
 Run in development env:
 export FLASK_ENV=development
-export FLASK_APP=heart_reciever.py
+export FLASK_APP=heart_receiver.py
 flask run
 """
 
@@ -36,4 +36,4 @@ def parse_request(userdata_heart_slug):
 	except Exception as e:
 		return Response(f'Storing heartbeat failed: {e}', 500, mimetype='text/plain')
 
-	return Response("Heartbeat recieved.", 200, mimetype='text/plain')
+	return Response("Heartbeat received.", 200, mimetype='text/plain')
