@@ -1,17 +1,39 @@
-# `http_reverse_heartbeat`
-Relay remote heartbeats curling in.
+# `heartware`
+HTTP reverse heartbeat middleware service.  
+Heartbeats may curl the service, the service sends new/alive/dead messages to spoke.
 
 ## Github Actions Docker image
 ```sh
 docker pull ghcr.io/jtagcat/http_reverse_heartbeat:1
 ```
-Gunicorn listens on port `8000`. Mount `/data` for data persistancy.
-## Usage
- - `/<heartbeat_slug>`
+Gunicorn listens on port `8000`, spoke on `7181`.
 
-By the nature of no authentication, anyone can send heartbeats to a slug they know.
+If set, environment value `BROADCAST_NEW_BEATS` defines the spoke channel on where to send new (since restart¹) heartbeat channels.  
+This acts as a discovery channel for other channels.
 
-## Live instance
+¹ Make an issue if you need restart awareness.
+
+## Usage and Live Instance
 ```sh
-curl https://gtt.c7.ee/github_beat
+curl https://hw.c7.ee/github_beat
+```
+
+By the nature of no authentication, anyone can send heartbeats, and read  to a slug they know.
+
+Subscribe with [pyspoke](https://gitlab.com/samflam/pyspoke):
+```py
+"Subscriber"
+import asyncio
+import spoke
+
+async def handle_foo(msg):
+    print(f"github_beat: {msg.body}")
+
+async def main():
+    client = spoke.pubsub.client.Client(conn_opts = {"host": "hw.c7.ee"})
+    await client.run()
+    await client.subscribe("github_beat", handle_foo)
+    await spoke.wait()
+
+asyncio.run(main())
 ```

@@ -7,5 +7,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-EXPOSE 8000 8001
-CMD [ "gunicorn", "-b :8000", "heart_proxy:app" ]
+EXPOSE 8000 7181
+CMD [ "gunicorn", "-b :8000", "heartware:app" ]
