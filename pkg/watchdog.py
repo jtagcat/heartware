@@ -12,10 +12,10 @@ SPOKEPORT = int(getenv('SPOKEPORT', '7181'))
 BROADCAST_NEW_BEATS = str(getenv('BROADCAST_NEW_BEATS', ''))
 
 
-def start_spoke_server(SPOKEPORT: int):
-    spoke_server = spoke.pubsub.server.Server(conn_opts = {"port": SPOKEPORT})
-    arun(spoke_server.run()) # error handling, inc bind inside spoke lib
-Thread(target=start_spoke_server, name="Spoke Server", args=(SPOKEPORT)).start()
+def start_spoke_server():
+	spoke_server = spoke.pubsub.server.Server(conn_opts = {"port": SPOKEPORT})
+	arun(spoke_server.run()) # error handling, inc bind inside spoke lib
+Thread(target=start_spoke_server, name="Spoke Server").start()
 print(f'Spoke started on 0.0.0.0: {SPOKEPORT}.')
 
 timers = {}
