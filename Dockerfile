@@ -1,6 +1,6 @@
 FROM python:3-slim
 
-WORKDIR /get_to_tg
+WORKDIR /http_reverse_heartbeat
 
 COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
