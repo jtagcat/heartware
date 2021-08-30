@@ -2,6 +2,9 @@
 HTTP reverse heartbeat middleware service.  
 Heartbeats may 'curl' the service, `hearware` sends `first_beat`/`changeto_alive`/`changeto_dead` messages to the spoke channels of slugs chosen by heartbeaters.
 
+`spoke_heartbeat:{n}` is also sent out by the server, to all active slugs, every `TIMEOUT/2` seconds.  
+(`spoke_heartbeat:60` indicates the signal is scheduled for every 60s)
+
 ## Github Actions Docker image
 ```sh
 docker pull ghcr.io/jtagcat/http_reverse_heartbeat:1

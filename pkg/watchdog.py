@@ -4,6 +4,8 @@ from threading import Timer, Thread
 from asyncio import run as arun
 import spoke
 
+from time import sleep
+
 
 #### ENVIRONMENT ####
 # no validation, panic towards admin is fine
@@ -17,6 +19,15 @@ def start_spoke_server():
 	arun(spoke_server.run()) # error handling, inc bind inside spoke lib
 Thread(target=start_spoke_server, name="Spoke Server").start()
 print(f'Spoke started on 0.0.0.0: {SPOKEPORT}.')
+
+def spoke_heartbeat(): # so you know the socket you are listening on actually works
+	while True:
+		heartbeat_delay = (TIMEOUT/2)
+		sleep(heartbeat_delay)
+		for slug in alive: # also includes dead
+			spoke.publish(slug, f'spoke_heartbeat:{heartbeat_delay}', port=SPOKEPORT)
+Thread(target=spoke_heartbeat, name="Spoke Self Heartbeat").start()
+
 
 timers = {}
 alive = {}
