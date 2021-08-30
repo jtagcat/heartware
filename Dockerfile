@@ -7,5 +7,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-EXPOSE 8000
-CMD [ "gunicorn", "-b :8000", "get_to_tg:app" ]
+EXPOSE 8000 8001
+CMD [ "gunicorn", "-b :8000", "heart_receiver:app" ]
