@@ -1,5 +1,4 @@
 pathvalidate==2.4.1
-#Flask~=2.0.1
-requests~=2.25.1
+Flask~=2.0.1
 pathvalidate~=2.4.1
 gunicorn ~= 20.1.0
