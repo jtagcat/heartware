@@ -1,6 +1,6 @@
 # `heartware`
 HTTP reverse heartbeat middleware service.  
-Heartbeats may 'curl' the service, `hearware` sends `first_beat`/`changeto_alive`/`changeto_dead` messages to corresponding spoke channels.
+Heartbeats may 'curl' the service, `hearware` sends `first_beat`/`changeto_alive`/`changeto_dead` messages to the spoke channels of slugs chosen by heartbeaters.
 
 ## Github Actions Docker image
 ```sh
