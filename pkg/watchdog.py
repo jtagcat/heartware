@@ -22,7 +22,7 @@ print(f'Spoke started on 0.0.0.0: {SPOKEPORT}.')
 
 def spoke_heartbeat(): # so you know the socket you are listening on actually works
 	while True:
-		heartbeat_delay = (TIMEOUT/2)
+		heartbeat_delay = int(TIMEOUT/2)
 		sleep(heartbeat_delay)
 		for slug in alive: # also includes dead
 			spoke.publish(slug, f'spoke_heartbeat:{heartbeat_delay}', port=SPOKEPORT)
