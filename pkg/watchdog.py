@@ -20,13 +20,13 @@ def start_spoke_server():
 Thread(target=start_spoke_server, name="Spoke Server").start()
 print(f'Spoke started on 0.0.0.0: {SPOKEPORT}.')
 
-def spoke_heartbeat(): # so you know the socket you are listening on actually works
+def spoke_alivebeat(): # so you know the socket you are listening on actually works
 	while True:
 		heartbeat_delay = int(TIMEOUT/2)
 		sleep(heartbeat_delay)
 		for slug in alive: # also includes dead
-			spoke.publish(slug, f'spoke_heartbeat:{heartbeat_delay}', port=SPOKEPORT)
-Thread(target=spoke_heartbeat, name="Spoke Self Heartbeat").start()
+			spoke.publish(slug, f'spoke_aliveeat:{heartbeat_delay}', port=SPOKEPORT)
+Thread(target=spoke_alivebeat, name="Spoke Self Alivebeat").start()
 
 
 timers = {}
@@ -43,7 +43,7 @@ def reset_timer(slug: str):
 		alive[slug] = True
 		spoke.publish(slug, 'first_beat', port=SPOKEPORT)
 		if BROADCAST_NEW_BEATS:
-			spoke.publish(BROADCAST_NEW_BEATS, 'first_beat', port=SPOKEPORT)
+			spoke.publish(BROADCAST_NEW_BEATS, f'broadcast_first:{slug}', port=SPOKEPORT)
 	else:
 		if (alive[slug] == False):
 			alive[slug] = True
