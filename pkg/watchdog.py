@@ -25,7 +25,7 @@ def spoke_alivebeat(): # so you know the socket you are listening on actually wo
 		heartbeat_delay = int(TIMEOUT/2)
 		sleep(heartbeat_delay)
 		for slug in alive: # also includes dead
-			spoke.publish(slug, f'spoke_aliveeat:{heartbeat_delay}', port=SPOKEPORT)
+			spoke.publish(slug, f'spoke_alivebeat:{heartbeat_delay}', port=SPOKEPORT)
 Thread(target=spoke_alivebeat, name="Spoke Self Alivebeat").start()
 
 
