@@ -32,7 +32,13 @@ Thread(target=spoke_heartbeat, name="Spoke Self Heartbeat").start()
 timers = {}
 alive = {}
 
+if BROADCAST_NEW_BEATS: # set for the `for` statement in spoke_hearbeat()
+	alive[BROADCAST_NEW_BEATS] = '' # oh, the wonderful third value of bools
+
 def reset_timer(slug: str):
+	if slug == BROADCAST_NEW_BEATS:
+		return 403,'Slug reserved.'
+
 	if not slug in timers:
 		alive[slug] = True
 		spoke.publish(slug, 'first_beat', port=SPOKEPORT)

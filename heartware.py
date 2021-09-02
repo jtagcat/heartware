@@ -29,7 +29,9 @@ def parse_request(userdata_heart_slug):
 		return Response(f'Invalid slug: {e}', 400, mimetype='text/plain')
 
 	try:
-		reset_timer(heart_slug)
+		err = reset_timer(heart_slug)
+		if err: # tuple, 0:http code, 1:message
+			return Response(err[1], err[0], mimetype='text/plain')
 	except Exception as e:
 		return Response(f'Beating heart failed: {e}', 500, mimetype='text/plain')
 
