@@ -11,8 +11,11 @@ docker pull ghcr.io/jtagcat/http_reverse_heartbeat:1
 ```
 Gunicorn listens on port `8000`, spoke on `7181`.
 
-If set, environment value `BROADCAST_NEW_BEATS` defines the spoke channel on where to send new (since restart¹) heartbeat channels.  
-This acts as a discovery channel for other channels.
+### Environment
+
+ - `BROADCAST_NEW_BEATS`, default empty. If set, all `first_beat` messages will be broadcasted also to the channel `BROADCAST_NEW_BEATS`. This acts as a discovery channel for other channels.
+ - `TIMEOUT`, default `120`, in seconds. Time to wait since last beat till death is announced (`changeto_dead`).
+ - `SPOKEPORT`, default `7181`. Port on which the embedded `pyspoke` spoke server is exposed to.
 
 ¹ Make an issue if you need restart awareness.
 
@@ -21,7 +24,7 @@ This acts as a discovery channel for other channels.
 curl https://hw.c7.ee/github_beat
 ```
 
-By the nature of no authentication, anyone can send heartbeats, and read  to a slug they know.
+By the nature of no authentication, anyone can send heartbeats, and read to a slug they know.
 
 Subscribe with [pyspoke](https://gitlab.com/samflam/pyspoke):
 ```py
@@ -40,3 +43,12 @@ async def main():
 
 asyncio.run(main())
 ```
+
+### Spoke messages reference
+Please reserve `:` as the seperator for additional info in messages.
+
+ - `first_beat` — sent on first heartbeat received on the channel (since the server started). This is the first `changeto_alive` the server has recieved. If this is recieved outside of the `BROADCAST_NEW_BEATS` channel, it's likely that heartware (spoke server) restarted, losing it's memory of slugs.
+ - `spoke_heartbeat` — after the first heartbeat, sent out regularly (currently implemented to be half of `TIMEOUT`).
+   - `:n` (`spoke_heartbeat:60`) — period, where n, in seconds, the heartbeat is sent out. (Heartbeat is sent out every 60 seconds.)
+ - `changeto_dead` — No heartbeat recieved within `TIMEOUT` seconds. Target assumed dead.
+ - `changeto_alive` — Heartbeat was recieved on a dead target. Target assumed to be back alive.
